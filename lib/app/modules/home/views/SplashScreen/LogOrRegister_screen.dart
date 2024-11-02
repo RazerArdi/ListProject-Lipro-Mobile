@@ -14,8 +14,7 @@ class LogOrRegister_screen extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            // Use Get.offNamed without putting a new instance of the controller
-            Get.offNamed(Routes.ONBOARDING);
+            Get.toNamed(Routes.ONBOARDING);
           },
         ),
       ),

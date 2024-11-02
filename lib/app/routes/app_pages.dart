@@ -20,7 +20,7 @@ class AppPages {
     GetPage(
       name: Routes.ONBOARDING,
       page: () => OnboardingScreen(),
-      binding: BindingsBuilder(() => Get.put(OnboardingController())),
+      binding: BindingsBuilder(() => Get.lazyPut(() => OnboardingController())),
     ),
     GetPage(
       name: Routes.LOGIN,
