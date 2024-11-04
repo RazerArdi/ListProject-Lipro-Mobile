@@ -1,13 +1,17 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lipro_mobile/app/modules/home/controllers/OnboardingController.dart';
+import 'package:lipro_mobile/app/modules/home/controllers/calendar_controller.dart';
 import 'package:lipro_mobile/app/modules/home/controllers/home_controller.dart';
 import 'package:lipro_mobile/app/modules/home/controllers/splash_controller.dart';
-import 'package:lipro_mobile/app/modules/home/views/SplashScreen/LogOrRegister_screen.dart';
 import 'package:lipro_mobile/app/modules/home/views/Login_Registered/LoginScreen.dart';
-import 'package:lipro_mobile/app/modules/home/views/SplashScreen/onboarding_screen.dart';
 import 'package:lipro_mobile/app/modules/home/views/SplashScreen/SplashScreen.dart';
-import 'package:lipro_mobile/app/modules/home/views/Login_Registered/Registered.dart';
 import 'package:lipro_mobile/app/modules/home/views/User/HomeScreen.dart';
+import 'package:lipro_mobile/app/modules/home/views/add_task_screen.dart';
+import 'package:lipro_mobile/app/modules/home/views/splashscreen/logorregister_screen.dart';
+import 'package:lipro_mobile/app/modules/home/views/splashscreen/onboarding_screen.dart';
+import 'package:lipro_mobile/app/modules/home/views/login_registered/registered.dart';
+
 part 'app_routes.dart';
 
 class AppPages {
@@ -39,10 +43,10 @@ class AppPages {
       page: () => HomeScreen(),
       binding: BindingsBuilder(() => Get.put(HomeController())),
     ),
+    GetPage(
+      name: Routes.ADD_TASK, // New route for AddTaskScreen
+      page: () => AddTaskScreen(),
+      binding: BindingsBuilder(() => Get.put(CalendarController())), // Binding CalendarController
+    ),
   ];
 }
-
-
-
-
-

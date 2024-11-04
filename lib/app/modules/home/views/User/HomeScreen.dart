@@ -1,23 +1,24 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lipro_mobile/app/modules/home/controllers/home_controller.dart';
+import 'package:lipro_mobile/app/modules/home/views/calendar_screen.dart';
+import 'package:lipro_mobile/app/modules/home/views/focus_screen.dart';
+import 'package:lipro_mobile/app/modules/home/views/index_screen.dart';
+import 'package:lipro_mobile/app/modules/home/views/profile_screen.dart';
+import 'package:lipro_mobile/app/modules/home/views/add_task_screen.dart'; // Import the AddTaskScreen
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 
 class HomeScreen extends StatelessWidget {
   final HomeController controller = Get.put(HomeController());
-
-  // Create a PersistentTabController
   final PersistentTabController _controller = PersistentTabController(initialIndex: 0);
-
-  // Image Picker and Firebase Storage instances
   final ImagePicker _picker = ImagePicker();
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
   HomeScreen() {
-    // Load user profile on initialization
     controller.loadUserProfile();
   }
 
@@ -26,14 +27,9 @@ class HomeScreen extends StatelessWidget {
     if (pickedFile != null) {
       File imageFile = File(pickedFile.path);
       try {
-        // Create a reference to the Firebase Storage location
         Reference ref = _storage.ref().child('profile_images/${DateTime.now().millisecondsSinceEpoch}');
         await ref.putFile(imageFile);
-
-        // Get the download URL
         String url = await ref.getDownloadURL();
-
-        // Save the image URL to Firestore
         await controller.saveUserProfileImage(url);
       } catch (e) {
         print('Error uploading image: $e');
@@ -51,7 +47,7 @@ class HomeScreen extends StatelessWidget {
         title: const Text("Index", style: TextStyle(color: Colors.white)),
         actions: [
           GestureDetector(
-            onTap: _pickAndUploadImage, // Trigger image picker on tap
+            onTap: _pickAndUploadImage,
             child: Obx(() {
               return CircleAvatar(
                 backgroundColor: Colors.black,
@@ -71,7 +67,7 @@ class HomeScreen extends StatelessWidget {
         context,
         controller: _controller,
         screens: _buildScreens(),
-        items: _navBarsItems(),
+        items: _navBarsItems(context), // Pass context here
         backgroundColor: Colors.black,
         navBarStyle: NavBarStyle.style15,
       ),
@@ -80,48 +76,15 @@ class HomeScreen extends StatelessWidget {
 
   List<Widget> _buildScreens() {
     return [
-      Center(
-        child: Obx(() {
-          if (controller.tasks.isEmpty) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset('assets/emptyTask.png', height: 200),
-                const SizedBox(height: 20),
-                const Text(
-                  "What do you want to do today?",
-                  style: TextStyle(color: Colors.white, fontSize: 18),
-                ),
-                const SizedBox(height: 10),
-                const Text(
-                  "Tap + to add your tasks",
-                  style: TextStyle(color: Colors.grey, fontSize: 16),
-                ),
-              ],
-            );
-          } else {
-            return ListView.builder(
-              itemCount: controller.tasks.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(
-                    controller.tasks[index],
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                );
-              },
-            );
-          }
-        }),
-      ),
-      Center(child: Text('Calendar', style: TextStyle(color: Colors.white))),
-      Center(child: Text('Focus', style: TextStyle(color: Colors.white))),
-      Center(child: Text('Profile', style: TextStyle(color: Colors.white))),
-      Center(child: Text('Settings', style: TextStyle(color: Colors.white))),
+      IndexScreen(),
+      CalendarScreen(),
+      Container(), // Dummy screen for Task, since we're using a modal
+      FocusScreen(),
+      ProfileScreen(),
     ];
   }
 
-  List<PersistentBottomNavBarItem> _navBarsItems() {
+  List<PersistentBottomNavBarItem> _navBarsItems(BuildContext context) {
     return [
       PersistentBottomNavBarItem(
         icon: Icon(Icons.home),
@@ -136,7 +99,19 @@ class HomeScreen extends StatelessWidget {
         inactiveColorPrimary: Colors.grey,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.add, color: Colors.blueAccent, size: 40.0),
+        icon: GestureDetector(
+          onTap: () {
+            // Show AddTaskScreen as a modal bottom sheet
+            showModalBottomSheet(
+              context: context,
+              backgroundColor: Colors.transparent,
+              builder: (context) {
+                return AddTaskScreen(); // Pass the AddTaskScreen here
+              },
+            );
+          },
+          child: Icon(Icons.add, color: Colors.blueAccent, size: 40.0),
+        ),
         title: ("Task"),
         activeColorPrimary: Colors.white,
         inactiveColorPrimary: Colors.grey,
