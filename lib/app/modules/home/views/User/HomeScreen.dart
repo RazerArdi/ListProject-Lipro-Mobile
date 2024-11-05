@@ -44,7 +44,7 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.black,
         elevation: 0,
-        title: const Text("Index", style: TextStyle(color: Colors.white)),
+        title: const Text("APP", style: TextStyle(color: Colors.white)),
         actions: [
           GestureDetector(
             onTap: _pickAndUploadImage,
@@ -60,7 +60,7 @@ class HomeScreen extends StatelessWidget {
               );
             }),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: 20),
         ],
       ),
       body: PersistentTabView(
@@ -87,16 +87,18 @@ class HomeScreen extends StatelessWidget {
   List<PersistentBottomNavBarItem> _navBarsItems(BuildContext context) {
     return [
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.home),
+        icon: Icon(Icons.home, size: 24.0), // Adjust icon size if needed
         title: ("Index"),
         activeColorPrimary: Colors.white,
         inactiveColorPrimary: Colors.grey,
+        textStyle: TextStyle(height: 1.0), // Adjust line height
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.calendar_today),
+        icon: Icon(Icons.calendar_today, size: 24.0),
         title: ("Calendar"),
         activeColorPrimary: Colors.white,
         inactiveColorPrimary: Colors.grey,
+        textStyle: TextStyle(height: 1.0),
       ),
       PersistentBottomNavBarItem(
         icon: GestureDetector(
@@ -115,18 +117,21 @@ class HomeScreen extends StatelessWidget {
         title: ("Task"),
         activeColorPrimary: Colors.white,
         inactiveColorPrimary: Colors.grey,
+        textStyle: TextStyle(height: 1.0),
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.timelapse),
+        icon: Icon(Icons.timelapse, size: 24.0),
         title: ("Focus"),
         activeColorPrimary: Colors.white,
         inactiveColorPrimary: Colors.grey,
+        textStyle: TextStyle(height: 1.0),
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.person),
+        icon: Icon(Icons.person, size: 24.0),
         title: ("Profile"),
         activeColorPrimary: Colors.white,
         inactiveColorPrimary: Colors.grey,
+        textStyle: TextStyle(height: 1.0),
       ),
     ];
   }
