@@ -61,8 +61,18 @@ class ProfileScreen extends StatelessWidget {
               SizedBox(height: 24),
               _buildSectionTitle('Account'),
               ProfileOption(icon: Icons.person, label: 'Change account name'),
-              ProfileOption(icon: Icons.lock, label: 'Change account password'),
-              ProfileOption(icon: Icons.image, label: 'Change account Image'),
+              ProfileOption(
+                icon: Icons.lock,
+                label: 'Change account password',
+                onTap: () => _showChangePasswordDialog(context), // Call the dialog here
+              ),
+              ProfileOption(
+                icon: Icons.image,
+                label: 'Change account Image',
+                onTap: () async {
+                  await controller.changeProfileImage();  // Call the changeProfileImage method
+                },
+              ),
               SizedBox(height: 24),
               _buildSectionTitle('Uptodo'),
               ProfileOption(icon: Icons.info, label: 'About US'),
@@ -90,6 +100,76 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
+  // Change Password Dialog
+  void _showChangePasswordDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        String oldPassword = '';
+        String newPassword = '';
+
+        return AlertDialog(
+          backgroundColor: Colors.grey[900],
+          title: Text(
+            "Change account Password",
+            style: TextStyle(color: Colors.white),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                obscureText: true,
+                onChanged: (value) => oldPassword = value,
+                decoration: InputDecoration(
+                  labelText: 'Enter old password',
+                  labelStyle: TextStyle(color: Colors.white),
+                  filled: true,
+                  fillColor: Colors.grey[800],
+                  border: OutlineInputBorder(),
+                ),
+                style: TextStyle(color: Colors.white),
+              ),
+              SizedBox(height: 16),
+              TextField(
+                obscureText: true,
+                onChanged: (value) => newPassword = value,
+                decoration: InputDecoration(
+                  labelText: 'Enter new password',
+                  labelStyle: TextStyle(color: Colors.white),
+                  filled: true,
+                  fillColor: Colors.grey[800],
+                  border: OutlineInputBorder(),
+                ),
+                style: TextStyle(color: Colors.white),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(
+                "Cancel",
+                style: TextStyle(color: Colors.blue),
+              ),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blueAccent,
+                padding: EdgeInsets.symmetric(horizontal: 24),
+              ),
+              onPressed: () async {
+                // Call changePassword method in controller
+                await controller.changePassword(oldPassword, newPassword);
+                Navigator.of(context).pop(); // Close the dialog after the password change attempt
+              },
+              child: Text("Edit"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _confirmLogout(BuildContext context) {
     showDialog(
       context: context,
@@ -104,7 +184,7 @@ class ProfileScreen extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                controller.logout(); // Call logout method in controller
+                controller.logout();
                 Navigator.of(context).pop();
               },
               child: Text("Logout"),

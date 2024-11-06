@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:lipro_mobile/app/modules/home/controllers/calendar_controller.dart';
 
 class CalendarScreen extends StatelessWidget {
