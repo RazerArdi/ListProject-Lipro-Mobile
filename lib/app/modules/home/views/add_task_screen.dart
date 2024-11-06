@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lipro_mobile/app/modules/home/controllers/calendar_controller.dart';
+import 'package:lipro_mobile/app/modules/home/controllers/task_controller.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class AddTaskScreen extends StatelessWidget {
-  final CalendarController controller = Get.find();
+class AddTaskScreen extends StatefulWidget {
+  @override
+  _AddTaskScreenState createState() => _AddTaskScreenState();
+}
+
+class _AddTaskScreenState extends State<AddTaskScreen> {
+  final TaskController controller = Get.put(TaskController());
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
 
@@ -25,9 +30,7 @@ class AddTaskScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async {
-        return true; // Allow pop
-      },
+      onWillPop: () async => true, // Allow pop
       child: Scaffold(
         backgroundColor: Color(0xFF1F1D2B),
         appBar: AppBar(
@@ -47,72 +50,16 @@ class AddTaskScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TextField(
-                  controller: titleController,
-                  decoration: InputDecoration(
-                    labelText: "Task Title",
-                    labelStyle: TextStyle(color: Colors.white),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Colors.white),
-                    ),
-                  ),
-                  style: TextStyle(color: Colors.white),
-                ),
+                _buildTextField(titleController, "Task Title"),
                 SizedBox(height: 16),
-                Text(
-                  "Description",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
+                _buildLabel("Description"),
                 SizedBox(height: 8),
-                TextField(
-                  controller: descriptionController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Colors.white),
-                    ),
-                    labelStyle: TextStyle(color: Colors.white),
-                  ),
-                  maxLines: 3,
-                  style: TextStyle(color: Colors.white),
-                ),
+                _buildTextField(descriptionController, "Description", maxLines: 3),
                 SizedBox(height: 16),
+                _buildDateTimeDisplay(context),
+                SizedBox(height: 20),
                 // Icons Row
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    GestureDetector(
-                      onTap: () => _showCustomDatePicker(context),
-                      child: Icon(Icons.access_time, color: Colors.white),
-                    ),
-                    SizedBox(width: 16),
-                    GestureDetector(
-                      onTap: () => _showCategoryPicker(context),
-                      child: Icon(Icons.label, color: Colors.white),
-                    ),
-                    SizedBox(width: 16),
-                    GestureDetector(
-                      onTap: () {
-                        // Handle flag tap
-                        _showPriorityPicker(context);
-                      },
-                      child: Icon(Icons.flag, color: Colors.white),
-                    ),
-                    Spacer(),
-                    GestureDetector(
-                      onTap: () {
-                        // Handle send task
-                        _handleSendTask();
-                      },
-                      child: Icon(Icons.send, color: Colors.purple),
-                    ),
-                  ],
-                ),
+                _buildIconRow(context),
                 SizedBox(height: 20),
               ],
             ),
@@ -122,18 +69,107 @@ class AddTaskScreen extends StatelessWidget {
     );
   }
 
+  Widget _buildTextField(TextEditingController controller, String label, {int maxLines = 1}) {
+    return Builder(
+      builder: (BuildContext context) {
+        return TextField(
+          controller: controller,
+          maxLines: maxLines,
+          decoration: InputDecoration(
+            labelText: label,
+            labelStyle: TextStyle(color: Colors.white),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(color: Colors.white),
+            ),
+          ),
+          style: TextStyle(color: Colors.white),
+          onSubmitted: (_) {
+            // Ensure the text is saved when the user presses enter
+            FocusScope.of(context).unfocus();  // Use 'context' from the Builder widget
+          },
+          onEditingComplete: () {
+            // Handle other actions if needed
+            FocusScope.of(context).unfocus();  // Use 'context' from the Builder widget
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildLabel(String text) {
+    return Text(
+      text,
+      style: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
+      ),
+    );
+  }
+
+  Widget _buildIconRow(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        _buildIconButton(Icons.access_time, () => _showCustomDatePicker(context)),
+        SizedBox(width: 16),
+        _buildIconButton(Icons.label, () => _showCategoryPicker(context)),
+        SizedBox(width: 16),
+        _buildIconButton(Icons.flag, () => _showPriorityPicker(context)),
+        Spacer(),
+        _buildIconButton(Icons.send, () => _handleSendTask(), color: Colors.purple),
+      ],
+    );
+  }
+
+  Widget _buildIconButton(IconData icon, VoidCallback onTap, {Color color = Colors.white}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Icon(icon, color: color),
+    );
+  }
+
+  // Build a widget that shows the selected date and time
+  Widget _buildDateTimeDisplay(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Date: ${controller.selectedDate.value.year}-${controller.selectedDate.value.month}-${controller.selectedDate.value.day}',
+          style: TextStyle(color: Colors.white),
+        ),
+        SizedBox(height: 8),
+        Text(
+          'Time: ${controller.selectedTime.value.format(context)}',
+          style: TextStyle(color: Colors.white),
+        ),
+      ],
+    );
+  }
 
   void _handleSendTask() {
     final newTask = Task(
       title: titleController.text,
       description: descriptionController.text,
-      date: controller.selectedDate.value,
-      time: controller.selectedTime.value,
+      date: controller.selectedDate.value,  // Date hanya berisi tanggal
+      time: controller.selectedTime.value,  // Waktu disimpan sebagai TimeOfDay
       category: controller.selectedCategory.value,
       priority: controller.selectedPriority.value,
+      isCompleted: false,
     );
-    controller.addTask(newTask); // Add task to Firestore
+
+    controller.addTask(newTask);
     Get.back();
+
+    Get.snackbar(
+      'Task Saved',
+      'Your task has been successfully saved to the database.',
+      backgroundColor: Colors.green,
+      colorText: Colors.white,
+      snackPosition: SnackPosition.BOTTOM,
+      duration: Duration(seconds: 3),
+    );
   }
 
 
@@ -151,9 +187,8 @@ class AddTaskScreen extends StatelessWidget {
         return Dialog(
           backgroundColor: Color(0xFF2C2B3A),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          child: Container(
+          child: Padding(
             padding: EdgeInsets.all(16.0),
-            height: 450,
             child: GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
@@ -175,74 +210,10 @@ class AddTaskScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) {
-        return Dialog(
-          backgroundColor: Color(0xFF2C2B3A),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          child: Container(
-            padding: EdgeInsets.all(16.0),
-            height: 200,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  'Select Priority',
-                  style: TextStyle(color: Colors.white, fontSize: 20),
-                ),
-                SizedBox(height: 20),
-                GridView.count(
-                  crossAxisCount: 3,
-                  childAspectRatio: 3,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  children: [
-                    _buildPriorityOption('Low', Colors.green),
-                    _buildPriorityOption('Medium', Colors.orange),
-                    _buildPriorityOption('High', Colors.red),
-                  ],
-                ),
-                SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () => Get.back(), // Close the dialog
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red, // Customize color for Cancel
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12)),
-                        ),
-                        child: Text('Cancel'),
-                      ),
-                    ),
-                    SizedBox(width: 10), // Add spacing between buttons
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // Logic to save the selected priority if needed
-                          Get.back(); // Close the dialog
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.purple,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12)),
-                        ),
-                        child: Text('Save'),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        );
+        return CustomPriorityPickerDialog(controller: controller);
       },
     );
   }
-
-
 
   Widget _buildCategoryOption(String category, IconData icon) {
     return GestureDetector(
@@ -260,34 +231,7 @@ class AddTaskScreen extends StatelessWidget {
           children: [
             Icon(icon, color: Colors.white, size: 40),
             SizedBox(height: 8),
-            Text(
-              category,
-              style: TextStyle(color: Colors.white),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPriorityOption(String priority, Color color) {
-    return GestureDetector(
-      onTap: () {
-        controller.selectPriority(priority);
-        Get.back();
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: color.withOpacity(0.2),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              priority,
-              style: TextStyle(color: Colors.white),
-            ),
+            Text(category, style: TextStyle(color: Colors.white)),
           ],
         ),
       ),
@@ -295,8 +239,112 @@ class AddTaskScreen extends StatelessWidget {
   }
 }
 
+class CustomPriorityPickerDialog extends StatefulWidget {
+  final TaskController controller;
+
+  CustomPriorityPickerDialog({required this.controller});
+
+  @override
+  _CustomPriorityPickerDialogState createState() =>
+      _CustomPriorityPickerDialogState();
+}
+
+class _CustomPriorityPickerDialogState
+    extends State<CustomPriorityPickerDialog> {
+  String? _selectedPriority;
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      backgroundColor: Color(0xFF2C2B3A),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Select Priority',
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            SizedBox(height: 20),
+            GridView.count(
+              crossAxisCount: 3,
+              childAspectRatio: 3,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              children: [
+                _buildPriorityOption('Low', Colors.green),
+                _buildPriorityOption('Medium', Colors.orange),
+                _buildPriorityOption('High', Colors.red),
+              ],
+            ),
+            SizedBox(height: 16),
+            _buildPriorityDialogButtons(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPriorityOption(String priority, Color color) {
+    bool isSelected = _selectedPriority == priority;
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _selectedPriority = priority;
+        });
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: isSelected ? color : color.withOpacity(0.2),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: isSelected ? Colors.white : Colors.transparent,
+            width: 2,
+          ),
+        ),
+        child: Center(
+          child: Text(
+            priority,
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPriorityDialogButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text('Cancel', style: TextStyle(color: Colors.white)),
+        ),
+        TextButton(
+          onPressed: () {
+            if (_selectedPriority != null) {
+              widget.controller.selectPriority(_selectedPriority!);
+              Navigator.pop(context);
+            }
+          },
+          child: Text('Save', style: TextStyle(color: Colors.white)),
+        ),
+      ],
+    );
+  }
+}
+
 class CustomDatePickerDialog extends StatelessWidget {
-  final CalendarController controller;
+  final TaskController controller;
 
   CustomDatePickerDialog({required this.controller});
 
@@ -310,17 +358,13 @@ class CustomDatePickerDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              'Select Date',
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
+            Text('Select Date', style: TextStyle(color: Colors.white, fontSize: 20)),
             SizedBox(height: 16),
             TableCalendar(
               firstDay: DateTime.now(),
               lastDay: DateTime(2101),
               focusedDay: controller.selectedDate.value,
-              selectedDayPredicate: (day) =>
-                  isSameDay(controller.selectedDate.value, day),
+              selectedDayPredicate: (day) => isSameDay(controller.selectedDate.value, day),
               onDaySelected: (selectedDay, focusedDay) {
                 controller.selectDate(selectedDay);
                 Navigator.of(context).pop();
@@ -347,47 +391,45 @@ class CustomDatePickerDialog extends StatelessWidget {
                 titleCentered: true,
                 titleTextStyle: TextStyle(color: Colors.white),
                 leftChevronIcon: Icon(Icons.chevron_left, color: Colors.white),
-                rightChevronIcon:
-                Icon(Icons.chevron_right, color: Colors.white),
+                rightChevronIcon: Icon(Icons.chevron_right, color: Colors.white),
               ),
             ),
             SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween, // Changed to space between
-              children: [
-                ElevatedButton(
-                  onPressed: () => Navigator.of(context).pop(), // Close the dialog
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red, // Customize color for Cancel
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
-                  ),
-                  child: Text('Cancel'),
-                ),
-                ElevatedButton(
-                  onPressed: () => _showTimePicker(context),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.purple,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
-                  ),
-                  child: Text('Choose Time'),
-                ),
-              ],
-            ),
+            _buildDateDialogButtons(context),
           ],
         ),
       ),
     );
   }
 
-  void _showTimePicker(BuildContext context) async {
-    TimeOfDay? pickedTime = await showTimePicker(
-      context: context,
-      initialTime: controller.selectedTime.value,
+  Widget _buildDateDialogButtons(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text('Cancel', style: TextStyle(color: Colors.white)),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text('Save', style: TextStyle(color: Colors.white)),
+        ),
+      ],
     );
-    if (pickedTime != null) {
-      controller.selectTime(pickedTime);
-    }
+  }
+
+  void _showTimePicker(BuildContext context) {
+    showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    ).then((time) {
+      if (time != null) {
+        controller.selectTime(time);
+      }
+    });
   }
 }
