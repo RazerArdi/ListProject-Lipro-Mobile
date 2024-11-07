@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lipro_mobile/app/modules/home/controllers/ProfileController.dart';
+import 'package:lipro_mobile/app/modules/home/controllers/SettingsController.dart';
+import 'package:lipro_mobile/app/modules/home/views/app_setting.dart';
 
 class ProfileScreen extends StatelessWidget {
   final ProfileController controller = Get.put(ProfileController());
@@ -57,7 +59,13 @@ class ProfileScreen extends StatelessWidget {
               Divider(color: Colors.grey[700]),
               SizedBox(height: 16),
               _buildSectionTitle('Settings'),
-              ProfileOption(icon: Icons.settings, label: 'App Settings'),
+              ProfileOption(
+                icon: Icons.settings,
+                label: 'App Settings',
+                onTap: () {
+                  Get.to(() => AppSettings());
+                },
+              ),
               SizedBox(height: 24),
               _buildSectionTitle('Account'),
               ProfileOption(icon: Icons.person, label: 'Change account name'),
