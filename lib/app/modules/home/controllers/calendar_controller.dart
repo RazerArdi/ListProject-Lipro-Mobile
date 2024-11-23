@@ -148,15 +148,27 @@ class CalendarController extends GetxController {
   }
 
   // Edit task in Firestore
-  void editTask(Task task) async {
+  void editTask(BuildContext context, Task task) async {
     try {
-      await firestore.collection('tasks').doc(task.id).update(task.toMap());
-      fetchTasks(); // Refresh tasks after editing
+      await firestore.collection('tasks').doc(task.id).update({
+        'title': task.title,
+        'description': task.description,
+        'date': task.date.toIso8601String(),
+        'time': task.time.format(context),  // Using context here
+        'category': task.category,
+        'priority': task.priority,
+        'isCompleted': task.isCompleted,
+      });
+
+      // After update, fetch tasks again to reflect the change
+      fetchTasks();
       print("Task updated successfully.");
     } catch (e) {
       print("Error updating task: $e");
     }
   }
+
+
 
   // Toggle task's completed status
   void toggleTaskCompletion(Task task) async {

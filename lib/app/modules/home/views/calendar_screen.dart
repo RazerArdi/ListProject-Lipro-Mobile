@@ -248,29 +248,46 @@ class CalendarScreen extends StatelessWidget {
 
   // Function to show the dialog with task details and options to "Complete" or "Uncomplete"
   void _showTaskDialog(BuildContext context, Task task) {
+    // Create controllers for editing title and description
+    final titleController = TextEditingController(text: task.title);
+    final descriptionController = TextEditingController(text: task.description);
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: Colors.grey[800], // Change the background for dialog
           title: Text(
-              'Task Details',
-              style: TextStyle(color: Colors.white)
+            'Task Details',
+            style: TextStyle(color: Colors.white),
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                task.title,
-                style: TextStyle(
-                    color: Colors.white, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 10),
-              Text(
-                "Description: ${task.description}",
+              // Task title input field
+              TextField(
+                controller: titleController,
                 style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  labelText: 'Title',
+                  labelStyle: TextStyle(color: Colors.grey),
+                  border: OutlineInputBorder(),
+                ),
               ),
               SizedBox(height: 10),
+              // Task description input field
+              TextField(
+                controller: descriptionController,
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  labelText: 'Description',
+                  labelStyle: TextStyle(color: Colors.grey),
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              SizedBox(height: 10),
+              // Task time display (non-editable)
               Text(
                 "At: ${task.time.format(context)}",
                 style: TextStyle(color: Colors.white),
@@ -281,9 +298,7 @@ class CalendarScreen extends StatelessWidget {
             // Button to toggle completion status
             TextButton(
               onPressed: () {
-                // Toggle task completion status
-                controller.toggleTaskCompletion(
-                    task); // Call the toggleTaskCompletion method
+                controller.toggleTaskCompletion(task);
                 Navigator.pop(context); // Close the dialog
               },
               child: Text(
@@ -292,11 +307,105 @@ class CalendarScreen extends StatelessWidget {
                     color: task.isCompleted ? Colors.red : Colors.green),
               ),
             ),
-            // Button to cancel the action
+            // Save changes to the task
             TextButton(
               onPressed: () {
-                Navigator.pop(
-                    context); // Close the dialog without making changes
+                final updatedTask = Task(
+                  id: task.id,
+                  title: titleController.text,
+                  description: descriptionController.text,
+                  date: task.date,
+                  time: task.time,
+                  category: task.category,
+                  priority: task.priority,
+                  isCompleted: task.isCompleted,
+                );
+                controller.editTask(context, updatedTask);
+                Navigator.pop(context); // Close dialog after saving
+              },
+              child: Text(
+                'Save',
+                style: TextStyle(color: Colors.green),
+              ),
+            ),
+            // Cancel and close dialog
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text(
+                'Cancel',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showEditTaskDialog(BuildContext context, Task task) {
+    final titleController = TextEditingController(text: task.title);
+    final descriptionController = TextEditingController(text: task.description);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        print('Dialog is being shown');  // Tambahkan log ini
+        return AlertDialog(
+          title: Text(
+            'Edit Task',
+            style: TextStyle(color: Colors.white),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextField(
+                controller: titleController,
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  labelText: 'Title',
+                  labelStyle: TextStyle(color: Colors.grey),
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              SizedBox(height: 10),
+              TextField(
+                controller: descriptionController,
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  labelText: 'Description',
+                  labelStyle: TextStyle(color: Colors.grey),
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                final updatedTask = Task(
+                  id: task.id,
+                  title: titleController.text,
+                  description: descriptionController.text,
+                  date: task.date,
+                  time: task.time,
+                  category: task.category,
+                  priority: task.priority,
+                  isCompleted: task.isCompleted,
+                );
+                controller.editTask(context, updatedTask);
+                Navigator.pop(context); // Tutup dialog setelah menyimpan
+              },
+              child: Text(
+                'Save',
+                style: TextStyle(color: Colors.green),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
               },
               child: Text(
                 'Cancel',
@@ -309,3 +418,4 @@ class CalendarScreen extends StatelessWidget {
     );
   }
 }
+
