@@ -4,6 +4,7 @@ import 'package:lipro_mobile/app/modules/home/controllers/OnboardingController.d
 import 'package:lipro_mobile/app/modules/home/controllers/calendar_controller.dart';
 import 'package:lipro_mobile/app/modules/home/controllers/home_controller.dart';
 import 'package:lipro_mobile/app/modules/home/controllers/splash_controller.dart';
+import 'package:lipro_mobile/app/modules/home/views/Admin/AdminScreen.dart';
 import 'package:lipro_mobile/app/modules/home/views/Login_Registered/LoginScreen.dart';
 import 'package:lipro_mobile/app/modules/home/views/SplashScreen/SplashScreen.dart';
 import 'package:lipro_mobile/app/modules/home/views/User/HomeScreen.dart';
@@ -47,6 +48,10 @@ class AppPages {
       name: Routes.ADD_TASK, // New route for AddTaskScreen
       page: () => AddTaskScreen(),
       binding: BindingsBuilder(() => Get.put(CalendarController())), // Binding CalendarController
+    ),
+    GetPage(
+      name: Routes.ADMIN,
+      page: () => AdminScreen(), // New admin screen
     ),
   ];
 }

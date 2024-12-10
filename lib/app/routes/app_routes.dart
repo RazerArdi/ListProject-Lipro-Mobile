@@ -8,7 +8,8 @@ abstract class Routes {
   static const LOGREG = _Paths.LOGREG;
   static const REGISTERED = _Paths.REGISTERED;
   static const HOME = _Paths.HOME;
-  static const ADD_TASK = _Paths.ADD_TASK; // New route constant for AddTaskScreen
+  static const ADD_TASK = _Paths.ADD_TASK;
+  static const ADMIN = _Paths.ADMIN; // New route for admin
 }
 
 abstract class _Paths {
@@ -19,5 +20,6 @@ abstract class _Paths {
   static const LOGREG = '/logreg';
   static const REGISTERED = '/registered';
   static const HOME = '/home';
-  static const ADD_TASK = '/add-task'; // Path for AddTaskScreen
+  static const ADD_TASK = '/add-task';
+  static const ADMIN = '/admin';
 }

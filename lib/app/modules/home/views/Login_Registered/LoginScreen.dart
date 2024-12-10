@@ -109,7 +109,8 @@ class LoginScreen extends StatelessWidget {
                     color: Colors.white, // Text color white
                   ),
                 ),
-              )),
+              )
+              ),
               SizedBox(height: 24.0), // Space between login button and 'Forgot Password?' link
 
               // "Forgot Password?" link that opens a password reset dialog
