@@ -8,7 +8,8 @@ import 'package:lipro_mobile/app/modules/home/views/Admin/AdminScreen.dart';
 import 'package:lipro_mobile/app/modules/home/views/Login_Registered/LoginScreen.dart';
 import 'package:lipro_mobile/app/modules/home/views/SplashScreen/SplashScreen.dart';
 import 'package:lipro_mobile/app/modules/home/views/User/HomeScreen.dart';
-import 'package:lipro_mobile/app/modules/home/views/add_task_screen.dart';
+import 'package:lipro_mobile/app/modules/home/views/User/add_task_screen.dart';
+import 'package:lipro_mobile/app/modules/home/views/User/Help/HelpScreen.dart';
 import 'package:lipro_mobile/app/modules/home/views/splashscreen/logorregister_screen.dart';
 import 'package:lipro_mobile/app/modules/home/views/splashscreen/onboarding_screen.dart';
 import 'package:lipro_mobile/app/modules/home/views/login_registered/registered.dart';
@@ -45,13 +46,17 @@ class AppPages {
       binding: BindingsBuilder(() => Get.put(HomeController())),
     ),
     GetPage(
-      name: Routes.ADD_TASK, // New route for AddTaskScreen
+      name: Routes.ADD_TASK,
       page: () => AddTaskScreen(),
-      binding: BindingsBuilder(() => Get.put(CalendarController())), // Binding CalendarController
+      binding: BindingsBuilder(() => Get.put(CalendarController())),
     ),
     GetPage(
       name: Routes.ADMIN,
-      page: () => AdminScreen(), // New admin screen
+      page: () => AdminScreen(),
+    ),
+    GetPage(
+      name: Routes.HELP,
+      page: () => HelpScreen(),
     ),
   ];
 }

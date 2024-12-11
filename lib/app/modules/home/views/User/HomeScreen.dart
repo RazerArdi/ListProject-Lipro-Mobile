@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart'; // Importing GetX for state management and routing
 import 'package:lipro_mobile/app/modules/home/controllers/home_controller.dart'; // Importing HomeController
-import 'package:lipro_mobile/app/modules/home/views/calendar_screen.dart'; // Importing the CalendarScreen widget
-import 'package:lipro_mobile/app/modules/home/views/focus_screen.dart'; // Importing the FocusScreen widget
-import 'package:lipro_mobile/app/modules/home/views/index_screen.dart'; // Importing the IndexScreen widget
-import 'package:lipro_mobile/app/modules/home/views/profile_screen.dart'; // Importing the ProfileScreen widget
-import 'package:lipro_mobile/app/modules/home/views/add_task_screen.dart'; // Importing the AddTaskScreen widget
+import 'package:lipro_mobile/app/modules/home/views/User/calendar_screen.dart'; // Importing the CalendarScreen widget
+import 'package:lipro_mobile/app/modules/home/views/User/focus_screen.dart'; // Importing the FocusScreen widget
+import 'package:lipro_mobile/app/modules/home/views/User/index_screen.dart'; // Importing the IndexScreen widget
+import 'package:lipro_mobile/app/modules/home/views/User/profile_screen.dart'; // Importing the ProfileScreen widget
+import 'package:lipro_mobile/app/modules/home/views/User/add_task_screen.dart'; // Importing the AddTaskScreen widget
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart'; // Importing the persistent bottom navigation bar package
 import 'package:firebase_storage/firebase_storage.dart'; // Importing Firebase Storage for image uploading
 import 'package:image_picker/image_picker.dart'; // Importing ImagePicker for selecting images from gallery

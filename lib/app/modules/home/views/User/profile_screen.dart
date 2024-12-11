@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lipro_mobile/app/modules/home/controllers/ProfileController.dart';
 import 'package:lipro_mobile/app/modules/home/controllers/SettingsController.dart';
-import 'package:lipro_mobile/app/modules/home/views/app_setting.dart';
+import 'package:lipro_mobile/app/modules/home/views/User/app_setting.dart';
+import 'package:lipro_mobile/app/routes/app_pages.dart';
+import 'package:lipro_mobile/app/modules/home/views/User/Help/HelpScreen.dart';
 
 class ProfileScreen extends StatelessWidget {
   final ProfileController controller = Get.put(ProfileController());
@@ -85,7 +87,11 @@ class ProfileScreen extends StatelessWidget {
               _buildSectionTitle('Uptodo'),
               ProfileOption(icon: Icons.info, label: 'About US'),
               ProfileOption(icon: Icons.help, label: 'FAQ'),
-              ProfileOption(icon: Icons.feedback, label: 'Help & Feedback'),
+              ProfileOption(
+                icon: Icons.help,
+                label: 'Help & Feedback',
+                onTap: () => Get.to(() => HelpScreen()),
+              ),
               ProfileOption(icon: Icons.support, label: 'Support US'),
               SizedBox(height: 24),
               ProfileOption(
@@ -245,3 +251,4 @@ class ProfileOption extends StatelessWidget {
     );
   }
 }
+

@@ -1,3 +1,4 @@
+
 part of 'app_pages.dart';
 
 abstract class Routes {
@@ -9,7 +10,9 @@ abstract class Routes {
   static const REGISTERED = _Paths.REGISTERED;
   static const HOME = _Paths.HOME;
   static const ADD_TASK = _Paths.ADD_TASK;
-  static const ADMIN = _Paths.ADMIN; // New route for admin
+  static const ADMIN = _Paths.ADMIN;
+  // New route constant for Help
+  static const HELP = _Paths.HELP;
 }
 
 abstract class _Paths {
@@ -22,4 +25,6 @@ abstract class _Paths {
   static const HOME = '/home';
   static const ADD_TASK = '/add-task';
   static const ADMIN = '/admin';
+  // New path for Help
+  static const HELP = '/help';
 }
