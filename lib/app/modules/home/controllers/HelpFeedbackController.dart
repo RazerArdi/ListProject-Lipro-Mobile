@@ -32,14 +32,25 @@ class HelpFeedbackController extends GetxController {
 
     try {
       User? user = _auth.currentUser;
+      if (user == null) {
+        Get.snackbar(
+          'Error',
+          'You must be logged in to submit feedback',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red.shade400,
+          colorText: Colors.white,
+          margin: const EdgeInsets.all(12),
+        );
+        return;
+      }
 
       await _firestore.collection('user_feedback').add({
-        'userId': user?.uid,
+        'userId': user.uid,
         'name': nameController.text.trim(),
-        'email': emailController.text.trim(),
-        'message': messageController.text.trim(),
+        'email': emailController.text.trim(), // Correct email
+        'message': messageController.text.trim(), // Correct message
         'timestamp': FieldValue.serverTimestamp(),
-        'status': 'pending'
+        'status': 'pending',
       });
 
       nameController.clear();
@@ -55,6 +66,7 @@ class HelpFeedbackController extends GetxController {
         margin: const EdgeInsets.all(12),
       );
     } catch (e) {
+      print('Error submitting feedback: $e');
       Get.snackbar(
         'Error',
         'Failed to submit feedback: ${e.toString()}',

@@ -4,6 +4,7 @@ import 'package:lipro_mobile/app/modules/home/controllers/OnboardingController.d
 import 'package:lipro_mobile/app/modules/home/controllers/calendar_controller.dart';
 import 'package:lipro_mobile/app/modules/home/controllers/home_controller.dart';
 import 'package:lipro_mobile/app/modules/home/controllers/splash_controller.dart';
+import 'package:lipro_mobile/app/modules/home/views/Admin/AdminFeedback.dart';
 import 'package:lipro_mobile/app/modules/home/views/Admin/AdminScreen.dart';
 import 'package:lipro_mobile/app/modules/home/views/Login_Registered/LoginScreen.dart';
 import 'package:lipro_mobile/app/modules/home/views/SplashScreen/SplashScreen.dart';
@@ -57,6 +58,10 @@ class AppPages {
     GetPage(
       name: Routes.HELP,
       page: () => HelpScreen(),
+    ),
+    GetPage(
+      name: Routes.adminFeedback,
+      page: () => AdminFeedback(),
     ),
   ];
 }

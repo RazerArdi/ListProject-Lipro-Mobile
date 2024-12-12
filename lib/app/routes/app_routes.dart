@@ -11,8 +11,8 @@ abstract class Routes {
   static const HOME = _Paths.HOME;
   static const ADD_TASK = _Paths.ADD_TASK;
   static const ADMIN = _Paths.ADMIN;
-  // New route constant for Help
   static const HELP = _Paths.HELP;
+  static const String adminFeedback = _Paths.adminFeedback;
 }
 
 abstract class _Paths {
@@ -25,6 +25,6 @@ abstract class _Paths {
   static const HOME = '/home';
   static const ADD_TASK = '/add-task';
   static const ADMIN = '/admin';
-  // New path for Help
   static const HELP = '/help';
+  static const String adminFeedback = '/admin-feedback';
 }
