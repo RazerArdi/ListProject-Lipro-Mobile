@@ -92,7 +92,11 @@ class ProfileScreen extends StatelessWidget {
                 label: 'Help & Feedback',
                 onTap: () => Get.to(() => HelpScreen()),
               ),
-              ProfileOption(icon: Icons.support, label: 'Support US'),
+              ProfileOption(
+                icon: Icons.support,
+                label: 'Support US',
+                onTap: () => Get.toNamed(Routes.SUPPORT_US),
+              ),
               SizedBox(height: 24),
               ProfileOption(
                 icon: Icons.logout,

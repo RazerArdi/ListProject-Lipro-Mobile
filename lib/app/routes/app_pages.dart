@@ -4,6 +4,7 @@ import 'package:lipro_mobile/app/modules/home/controllers/OnboardingController.d
 import 'package:lipro_mobile/app/modules/home/controllers/calendar_controller.dart';
 import 'package:lipro_mobile/app/modules/home/controllers/home_controller.dart';
 import 'package:lipro_mobile/app/modules/home/controllers/splash_controller.dart';
+import 'package:lipro_mobile/app/modules/home/controllers/SupportUsController.dart'; // Add this import
 import 'package:lipro_mobile/app/modules/home/views/Admin/AdminFeedback.dart';
 import 'package:lipro_mobile/app/modules/home/views/Admin/AdminScreen.dart';
 import 'package:lipro_mobile/app/modules/home/views/Login_Registered/LoginScreen.dart';
@@ -11,6 +12,7 @@ import 'package:lipro_mobile/app/modules/home/views/SplashScreen/SplashScreen.da
 import 'package:lipro_mobile/app/modules/home/views/User/HomeScreen.dart';
 import 'package:lipro_mobile/app/modules/home/views/User/add_task_screen.dart';
 import 'package:lipro_mobile/app/modules/home/views/User/Help/HelpScreen.dart';
+import 'package:lipro_mobile/app/modules/home/views/User/SupportUsView.dart'; // Add this import
 import 'package:lipro_mobile/app/modules/home/views/splashscreen/logorregister_screen.dart';
 import 'package:lipro_mobile/app/modules/home/views/splashscreen/onboarding_screen.dart';
 import 'package:lipro_mobile/app/modules/home/views/login_registered/registered.dart';
@@ -62,6 +64,13 @@ class AppPages {
     GetPage(
       name: Routes.adminFeedback,
       page: () => AdminFeedback(),
+    ),
+    GetPage(
+      name: Routes.SUPPORT_US,
+      page: () => SupportUsView(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut<SupportUsController>(() => SupportUsController());
+      }),
     ),
   ];
 }
