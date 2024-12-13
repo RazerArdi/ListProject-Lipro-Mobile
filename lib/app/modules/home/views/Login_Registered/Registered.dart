@@ -5,6 +5,7 @@ import 'package:lipro_mobile/app/modules/home/controllers/register_controller.da
 class RegisterScreen extends StatelessWidget {
   final RegisterController registerController = Get.put(RegisterController());
 
+  final TextEditingController fullNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
@@ -45,7 +46,24 @@ class RegisterScreen extends StatelessWidget {
               ),
               SizedBox(height: 40.0),
 
-              // Role Selection (Previous implementation)
+              // Full Name TextField
+              TextField(
+                controller: fullNameController,
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  labelText: 'Full Name',
+                  labelStyle: TextStyle(color: Colors.white),
+                  filled: true,
+                  fillColor: Colors.grey[850],
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+              SizedBox(height: 16.0),
+
+              // Role Selection
               Text(
                 'Select Role',
                 style: TextStyle(
@@ -58,7 +76,6 @@ class RegisterScreen extends StatelessWidget {
               Obx(() => Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // User Role Button
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: registerController.selectedRole.value == 'User'
@@ -82,7 +99,6 @@ class RegisterScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(width: 16.0),
-                  // Admin Role Button
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: registerController.selectedRole.value == 'Admin'
@@ -197,6 +213,7 @@ class RegisterScreen extends StatelessWidget {
                     ? null
                     : () {
                   registerController.register(
+                    fullNameController.text.trim(),
                     emailController.text.trim(),
                     passwordController.text.trim(),
                     confirmPasswordController.text.trim(),
@@ -213,8 +230,6 @@ class RegisterScreen extends StatelessWidget {
                   ),
                 ),
               )),
-
-              // Remaining UI components (social login, login link, etc.)
             ],
           ),
         ),
@@ -222,4 +237,3 @@ class RegisterScreen extends StatelessWidget {
     );
   }
 }
-

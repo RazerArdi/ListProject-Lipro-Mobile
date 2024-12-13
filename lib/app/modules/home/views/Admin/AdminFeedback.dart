@@ -12,13 +12,11 @@ class AdminFeedback extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Get.toNamed(Routes.ADMIN),
-        ),
         title: Text('User Feedbacks', style: TextStyle(color: Colors.white)),
         backgroundColor: const Color(0xFF1E1E1E),
         elevation: 0,
+        automaticallyImplyLeading: false,
+        centerTitle: true,
       ),
       body: Obx(() {
         if (controller.isLoading.value) {
@@ -74,6 +72,7 @@ class AdminFeedback extends StatelessWidget {
       }),
     );
   }
+
 
   Widget _buildFeedbackCard(BuildContext context, FeedbackModel feedback) {
     return Card(

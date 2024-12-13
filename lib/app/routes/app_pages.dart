@@ -6,7 +6,10 @@ import 'package:lipro_mobile/app/modules/home/controllers/home_controller.dart';
 import 'package:lipro_mobile/app/modules/home/controllers/splash_controller.dart';
 import 'package:lipro_mobile/app/modules/home/controllers/SupportUsController.dart'; // Add this import
 import 'package:lipro_mobile/app/modules/home/views/Admin/AdminFeedback.dart';
+import 'package:lipro_mobile/app/modules/home/views/Admin/AdminHomeScreen.dart';
 import 'package:lipro_mobile/app/modules/home/views/Admin/AdminScreen.dart';
+import 'package:lipro_mobile/app/modules/home/views/Admin/UsersManagementScreen.dart';
+import 'package:lipro_mobile/app/modules/home/views/Admin/UsersManagementScreen.dart';
 import 'package:lipro_mobile/app/modules/home/views/Login_Registered/LoginScreen.dart';
 import 'package:lipro_mobile/app/modules/home/views/SplashScreen/SplashScreen.dart';
 import 'package:lipro_mobile/app/modules/home/views/User/HomeScreen.dart';
@@ -71,6 +74,15 @@ class AppPages {
       binding: BindingsBuilder(() {
         Get.lazyPut<SupportUsController>(() => SupportUsController());
       }),
+    ),
+    GetPage(
+      name: Routes.adminHome,
+      page: () => AdminHomeScreen(),
+    ),
+    GetPage(
+      name: Routes.usersManagement,
+      page: () => UsersManagementScreen(),
+      transition: Transition.cupertino,
     ),
   ];
 }

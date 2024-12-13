@@ -1,28 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lipro_mobile/app/modules/home/views/Admin/AdminFeedback.dart';
+import 'package:lipro_mobile/app/modules/home/views/Admin/AdminScreen.dart';
+import 'package:lipro_mobile/app/modules/home/views/Admin/AdminSetting.dart';
+import 'package:lipro_mobile/app/modules/home/views/Admin/UsersManagementScreen.dart';
 
 class AdminBottomBarController extends GetxController {
-  final RxInt _currentIndex = 0.obs;
-  int get currentIndex => _currentIndex.value;
+  final RxInt currentIndex = 0.obs;
+
+  final List<Widget> pages = [
+    AdminScreen(),
+    UsersManagementScreen(),
+    AdminFeedback(),
+    AdminSetting(),
+  ];
 
   void changePage(int index) {
-    _currentIndex.value = index;
-
-    // Navigate to corresponding routes
-    switch (index) {
-      case 0:
-        Get.offNamed('/admin-dashboard');
-        break;
-      case 1:
-        Get.offNamed('/admin-users');
-        break;
-      case 2:
-        Get.offNamed('/admin-feedback');
-        break;
-      case 3:
-        Get.offNamed('/admin-settings');
-        break;
-    }
+    currentIndex.value = index;
   }
 }
 
@@ -33,7 +27,7 @@ class AdminBottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() => BottomNavigationBar(
       backgroundColor: const Color(0xFF1E1E1E),
-      currentIndex: controller.currentIndex,
+      currentIndex: controller.currentIndex.value,
       onTap: controller.changePage,
       type: BottomNavigationBarType.fixed,
       selectedItemColor: Colors.blueAccent,

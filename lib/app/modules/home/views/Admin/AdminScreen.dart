@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:lipro_mobile/app/modules/home/controllers/AdminController.dart';
-import 'package:lipro_mobile/app/modules/home/views/Admin/AdminAppBar.dart';
-import 'package:lipro_mobile/app/modules/home/views/Admin/AdminBottomBar.dart';
 
 
 class AdminScreen extends StatelessWidget {
@@ -13,10 +11,6 @@ class AdminScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF121212),
-      appBar: AdminAppBar(
-        title: 'Admin Dashboard',
-        showCrudActions: true, // Show CRUD buttons
-      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
@@ -34,7 +28,6 @@ class AdminScreen extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: AdminBottomBar(),
     );
   }
 

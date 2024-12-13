@@ -11,10 +11,11 @@ abstract class Routes {
   static const ADD_TASK = _Paths.ADD_TASK;
   static const ADMIN = _Paths.ADMIN;
   static const HELP = _Paths.HELP;
-  static const String adminFeedback = _Paths.adminFeedback;
+  static const adminFeedback = _Paths.adminFeedback;
 
-  // Add the new SUPPORT_US route
   static const SUPPORT_US = _Paths.SUPPORT_US;
+  static const adminHome = _Paths.adminHome;
+  static const usersManagement = _Paths.usersManagement;
 }
 
 abstract class _Paths {
@@ -30,6 +31,7 @@ abstract class _Paths {
   static const HELP = '/help';
   static const String adminFeedback = '/admin-feedback';
 
-  // Add the new SUPPORT_US path
   static const SUPPORT_US = '/support-us';
+  static const String adminHome = '/admin-home';
+  static const usersManagement = '/users-management';
 }

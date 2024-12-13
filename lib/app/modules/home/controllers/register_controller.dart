@@ -7,7 +7,8 @@ class RegisterController extends GetxController {
   var selectedRole = 'User'.obs;
 
   bool isValidEmail(String email) {
-    return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
+    return RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
+        .hasMatch(email.trim());
   }
 
   bool isValidPassword(String password) {
@@ -15,13 +16,14 @@ class RegisterController extends GetxController {
   }
 
   Future<void> register(
+      String fullName,
       String email,
       String password,
       String confirmPassword,
       String role,
       ) async {
     // Comprehensive input validation
-    if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
+    if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty || fullName.isEmpty) {
       Get.snackbar('Error', 'All fields must be filled', snackPosition: SnackPosition.BOTTOM);
       return;
     }
@@ -40,7 +42,6 @@ class RegisterController extends GetxController {
       Get.snackbar('Error', 'Passwords do not match', snackPosition: SnackPosition.BOTTOM);
       return;
     }
-
     try {
       isLoading.value = true;
 
@@ -55,19 +56,20 @@ class RegisterController extends GetxController {
         // Simpan data pengguna di Firestore
         await FirebaseFirestore.instance
             .collection('users')
-            .doc(userCredential!.user!.uid) // Mengakses user!.uid setelah memeriksa null dengan benar
+            .doc(userCredential!.user!.uid)
             .set({
           'email': email,
-          'role': role, // Pastikan role disimpan dengan benar
+          'fullName': fullName,  // Save the fullName here
+          'role': role,
           'createdAt': FieldValue.serverTimestamp(),
-          'uid': userCredential.user!.uid, // Explicitly store UID
+          'uid': userCredential.user!.uid,
         });
 
         // Arahkan berdasarkan role
         if (role == 'Admin') {
-          Get.offNamed('/admin'); // Arahkan ke halaman admin
+          Get.offNamed('/admin-home');
         } else {
-          Get.offNamed('/home'); // Arahkan ke halaman home untuk user biasa
+          Get.offNamed('/home');
         }
 
         Get.snackbar(

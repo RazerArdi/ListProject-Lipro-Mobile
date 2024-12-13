@@ -34,7 +34,7 @@ class LoginController extends GetxController {
             "Welcome Admin ${userCredential.user?.email}!",
             snackPosition: SnackPosition.BOTTOM,
           );
-          Get.offNamed('/admin');
+          Get.offNamed('/admin-home');
         } else if (role == 'User') {
           Get.snackbar(
             "User Login Successful",
