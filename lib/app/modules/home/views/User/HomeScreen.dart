@@ -5,7 +5,7 @@ import 'package:get/get.dart'; // Importing GetX for state management and routin
 import 'package:lipro_mobile/app/modules/home/controllers/home_controller.dart'; // Importing HomeController
 import 'package:lipro_mobile/app/modules/home/views/User/calendar_screen.dart'; // Importing the CalendarScreen widget
 import 'package:lipro_mobile/app/modules/home/views/User/focus_screen.dart'; // Importing the FocusScreen widget
-import 'package:lipro_mobile/app/modules/home/views/User/index_screen.dart'; // Importing the IndexScreen widget
+import 'package:lipro_mobile/app/modules/home/views/User/IndexPage/index_screen.dart'; // Importing the IndexScreen widget
 import 'package:lipro_mobile/app/modules/home/views/User/profile_screen.dart'; // Importing the ProfileScreen widget
 import 'package:lipro_mobile/app/modules/home/views/User/add_task_screen.dart'; // Importing the AddTaskScreen widget
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart'; // Importing the persistent bottom navigation bar package
