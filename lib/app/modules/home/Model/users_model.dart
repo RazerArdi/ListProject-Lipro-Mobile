@@ -36,9 +36,10 @@ class UserModel {
       fullName: map['fullName'] ?? '',
       email: map['email'] ?? '',
       role: map['role'] ?? '',
-      createdAt: (map['createdAt'] as Timestamp).toDate(), // Convert Timestamp to DateTime
+      createdAt: map['createdAt'] is Timestamp
+          ? (map['createdAt'] as Timestamp).toDate() // Jika Timestamp
+          : DateTime.parse(map['createdAt']),        // Jika String
       isActive: map['isActive'] ?? true,
     );
   }
-
 }
