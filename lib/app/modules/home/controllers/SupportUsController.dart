@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -84,9 +85,10 @@ class SupportUsController extends GetxController {
       try {
         isSubmitting.value = true;
 
-        // Upload image to Firebase Storage
+        // Step 1: Upload image to Firebase Storage
         final imageUrl = await _uploadImageToFirebase();
 
+        // Step 2: Create a model object
         final supportModel = SupportUsModel(
           name: nameController.text.trim(),
           email: emailController.text.trim(),
@@ -95,12 +97,17 @@ class SupportUsController extends GetxController {
           transferProofUrl: imageUrl,
         );
 
-        // Simulate saving data to Firestore or other backend service
-        // await supportService.submitSupport(supportModel);
+        // Step 3: Save data to Firestore
+        await FirebaseFirestore.instance.collection('SupportUS').add({
+          'name': supportModel.name,
+          'email': supportModel.email,
+          'amount': supportModel.amount,
+          'message': supportModel.message,
+          'transferProofUrl': supportModel.transferProofUrl,
+          'timestamp': FieldValue.serverTimestamp(), // Add a timestamp
+        });
 
-        // Simulating network delay
-        await Future.delayed(const Duration(seconds: 2));
-
+        // Success Snackbar
         submissionSuccess.value = true;
         clearForm();
 
@@ -111,6 +118,7 @@ class SupportUsController extends GetxController {
           colorText: Colors.white,
         );
       } catch (e) {
+        // Error Snackbar
         Get.snackbar(
           'Error',
           'Failed to submit support. Please try again. $e',
@@ -123,7 +131,7 @@ class SupportUsController extends GetxController {
     } else {
       Get.snackbar(
         'Error',
-        'Please fill all required fields and upload transfer proof',
+        'Please fill all required fields and upload transfer proof.',
         backgroundColor: Colors.red,
         colorText: Colors.white,
       );
