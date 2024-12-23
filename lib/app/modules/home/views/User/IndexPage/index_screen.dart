@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lipro_mobile/app/modules/home/controllers/IndexController.dart';
+import 'package:lipro_mobile/app/modules/home/controllers/UserControllers/IndexController.dart';
 import 'package:lipro_mobile/app/modules/home/views/User/IndexPage/TaskCard.dart';
 import 'package:lipro_mobile/app/modules/home/views/User/IndexPage/TaskCard.dart';
 import 'package:lipro_mobile/app/modules/home/views/User/IndexPage/TaskDetailScreen.dart';

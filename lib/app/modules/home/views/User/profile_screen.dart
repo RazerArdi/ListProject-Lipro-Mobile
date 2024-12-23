@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lipro_mobile/app/modules/home/controllers/ProfileController.dart';
+import 'package:lipro_mobile/app/modules/home/controllers/UserControllers/ProfileController.dart';
 import 'package:lipro_mobile/app/modules/home/controllers/SettingsController.dart';
 import 'package:lipro_mobile/app/modules/home/views/User/app_setting.dart';
 import 'package:lipro_mobile/app/routes/app_pages.dart';

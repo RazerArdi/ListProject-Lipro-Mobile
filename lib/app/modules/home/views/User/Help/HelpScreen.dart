@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lipro_mobile/app/modules/home/controllers/HelpFeedbackController.dart';
+import 'package:lipro_mobile/app/modules/home/controllers/UserControllers/HelpFeedbackController.dart';
 
 
 class HelpScreen extends StatelessWidget {

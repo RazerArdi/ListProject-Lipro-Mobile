@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lipro_mobile/app/modules/home/views/Admin/AdminFeedback.dart';
 import 'package:lipro_mobile/app/modules/home/views/Admin/AdminScreen.dart';
-import 'package:lipro_mobile/app/modules/home/views/Admin/AdminSetting.dart';
+import 'package:lipro_mobile/app/modules/home/views/Admin/AdminSettingView.dart';
 import 'package:lipro_mobile/app/modules/home/views/Admin/UsersManagementScreen.dart';
 
 class AdminBottomBarController extends GetxController {
@@ -12,7 +12,7 @@ class AdminBottomBarController extends GetxController {
     AdminScreen(),
     UsersManagementScreen(),
     AdminFeedback(),
-    AdminSetting(),
+    AdminSettingView(),
   ];
 
   void changePage(int index) {

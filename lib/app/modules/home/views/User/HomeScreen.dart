@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart'; // Importing GetX for state management and routing
-import 'package:lipro_mobile/app/modules/home/controllers/home_controller.dart'; // Importing HomeController
+import 'package:lipro_mobile/app/modules/home/controllers/UserControllers/home_controller.dart'; // Importing HomeController
 import 'package:lipro_mobile/app/modules/home/views/User/calendar_screen.dart'; // Importing the CalendarScreen widget
 import 'package:lipro_mobile/app/modules/home/views/User/focus_screen.dart'; // Importing the FocusScreen widget
 import 'package:lipro_mobile/app/modules/home/views/User/IndexPage/index_screen.dart'; // Importing the IndexScreen widget

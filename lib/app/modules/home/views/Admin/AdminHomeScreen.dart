@@ -13,7 +13,6 @@ class AdminHomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: const AdminAppBar(
         title: 'Admin Dashboard',
-        showCrudActions: true, // Enable CRUD actions
       ),
       body: Obx(() {
         // Menampilkan halaman sesuai currentIndex

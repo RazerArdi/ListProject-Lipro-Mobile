@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:lipro_mobile/app/modules/home/Model/FeedbackModel.dart';
-import 'package:lipro_mobile/app/modules/home/controllers/AdminFeedbackController.dart';
+import 'package:lipro_mobile/app/modules/home/controllers/AdminControllers/AdminFeedbackController.dart';
 import 'package:lipro_mobile/app/routes/app_pages.dart';
 
 class AdminFeedback extends StatelessWidget {

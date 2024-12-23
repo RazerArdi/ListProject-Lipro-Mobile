@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:lipro_mobile/app/modules/home/controllers/calendar_controller.dart';
+import 'package:lipro_mobile/app/modules/home/controllers/UserControllers/calendar_controller.dart';
 
 class CalendarScreen extends StatelessWidget {
   final CalendarController controller = Get.put(CalendarController());

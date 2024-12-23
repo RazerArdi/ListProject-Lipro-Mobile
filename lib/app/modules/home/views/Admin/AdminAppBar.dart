@@ -5,235 +5,184 @@ import 'package:firebase_auth/firebase_auth.dart';
 class AdminAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final List<Widget>? actions;
-  final bool showCrudActions;
 
   const AdminAppBar({
     Key? key,
     required this.title,
     this.actions,
-    this.showCrudActions = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: const Color(0xFF1E1E1E),
+      backgroundColor: Colors.transparent,
       elevation: 0,
+      flexibleSpace: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Theme.of(context).primaryColor,
+              Theme.of(context).primaryColor.withOpacity(0.8),
+            ],
+          ),
+        ),
+      ),
       title: Text(
         title,
         style: const TextStyle(
           color: Colors.white,
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w500,
+          fontSize: 20,
+          letterSpacing: 0.5,
         ),
+      ),
+      centerTitle: true,
+      leading: IconButton(
+        icon: const Icon(
+          Icons.menu,
+          color: Colors.white,
+          size: 24,
+        ),
+        onPressed: () => Scaffold.of(context).openDrawer(),
+        tooltip: 'Menu',
       ),
       actions: [
-        // Conditional CRUD actions
-        if (showCrudActions) ...[
-          IconButton(
-            icon: const Icon(Icons.add, color: Colors.white),
-            onPressed: () => _showAddDialog(context),
-            tooltip: 'Add New Item',
-          ),
-          IconButton(
-            icon: const Icon(Icons.edit, color: Colors.white),
-            onPressed: () => _showEditDialog(context),
-            tooltip: 'Edit Items',
-          ),
-          IconButton(
-            icon: const Icon(Icons.delete, color: Colors.red),
-            onPressed: () => _showDeleteDialog(context),
-            tooltip: 'Delete Items',
-          ),
-        ],
-
-        // Additional actions passed to the AppBar
         ...?actions,
-
-        // Logout action
-        IconButton(
-          icon: const Icon(Icons.logout, color: Colors.white),
-          onPressed: _signOut,
-          tooltip: 'Logout',
+        PopupMenuButton<String>(
+          icon: const Icon(
+            Icons.more_vert,
+            color: Colors.white,
+            size: 24,
+          ),
+          offset: const Offset(0, 45),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          itemBuilder: (context) => [
+            PopupMenuItem(
+              value: 'profile',
+              child: ListTile(
+                leading: const Icon(Icons.person_outline),
+                title: const Text('Profile'),
+                contentPadding: EdgeInsets.zero,
+              ),
+            ),
+            PopupMenuItem(
+              value: 'settings',
+              child: ListTile(
+                leading: const Icon(Icons.settings_outlined),
+                title: const Text('Settings'),
+                contentPadding: EdgeInsets.zero,
+              ),
+            ),
+            const PopupMenuDivider(),
+            PopupMenuItem(
+              value: 'logout',
+              child: ListTile(
+                leading: const Icon(
+                  Icons.logout_outlined,
+                  color: Colors.red,
+                ),
+                title: const Text(
+                  'Logout',
+                  style: TextStyle(color: Colors.red),
+                ),
+                contentPadding: EdgeInsets.zero,
+              ),
+            ),
+          ],
+          onSelected: (value) {
+            if (value == 'logout') {
+              _showLogoutConfirmation(context);
+            }
+          },
         ),
+        const SizedBox(width: 8),
       ],
-      leading: IconButton(
-        icon: const Icon(Icons.menu, color: Colors.white),
-        onPressed: () => Scaffold.of(context).openDrawer(),
-      ),
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(1),
         child: Container(
-          color: Colors.grey[800],
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Colors.white.withOpacity(0.1),
+                Colors.white.withOpacity(0.05),
+              ],
+            ),
+          ),
           height: 1,
         ),
       ),
     );
   }
 
-  void _signOut() {
-    FirebaseAuth.instance.signOut();
-    Get.offAllNamed('/login');
-  }
-
-  void _showAddDialog(BuildContext context) {
+  void _showLogoutConfirmation(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF1E1E1E),
-        title: const Text(
-          'Add New Item',
-          style: TextStyle(color: Colors.white),
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              decoration: InputDecoration(
-                hintText: 'Item Name',
-                hintStyle: TextStyle(color: Colors.grey[400]),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey[600]!),
-                ),
-              ),
-              style: const TextStyle(color: Colors.white),
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Theme.of(context).cardColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          title: const Text(
+            'Konfirmasi Logout',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
             ),
-            const SizedBox(height: 16),
-            TextField(
-              decoration: InputDecoration(
-                hintText: 'Item Description',
-                hintStyle: TextStyle(color: Colors.grey[400]),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey[600]!),
+          ),
+          content: const Text(
+            'Apakah Anda yakin ingin keluar dari aplikasi?',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text(
+                'Tidak',
+                style: TextStyle(
+                  color: Colors.grey,
                 ),
               ),
-              style: const TextStyle(color: Colors.white),
-              maxLines: 3,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _signOut();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: const Text(
+                'Ya, Logout',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
             ),
           ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Get.back(),
-            child: const Text(
-              'Cancel',
-              style: TextStyle(color: Colors.red),
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              // Implement add logic
-              Get.back();
-              Get.snackbar(
-                'Success',
-                'Item added successfully',
-                backgroundColor: Colors.green,
-                colorText: Colors.white,
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blueAccent,
-            ),
-            child: const Text('Add'),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
-  void _showEditDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF1E1E1E),
-        title: const Text(
-          'Edit Items',
-          style: TextStyle(color: Colors.white),
-        ),
-        content: SizedBox(
-          width: double.maxFinite,
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: 5, // Example count
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(
-                  'Item ${index + 1}',
-                  style: const TextStyle(color: Colors.white),
-                ),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.edit, color: Colors.blue),
-                      onPressed: () {
-                        // Implement edit logic
-                      },
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.delete, color: Colors.red),
-                      onPressed: () {
-                        // Implement delete logic
-                      },
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Get.back(),
-            child: const Text(
-              'Close',
-              style: TextStyle(color: Colors.red),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showDeleteDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF1E1E1E),
-        title: const Text(
-          'Delete Items',
-          style: TextStyle(color: Colors.white),
-        ),
-        content: const Text(
-          'Select items to delete. This action cannot be undone.',
-          style: TextStyle(color: Colors.grey),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Get.back(),
-            child: const Text(
-              'Cancel',
-              style: TextStyle(color: Colors.grey),
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              // Implement bulk delete logic
-              Get.back();
-              Get.snackbar(
-                'Success',
-                'Selected items deleted',
-                backgroundColor: Colors.red,
-                colorText: Colors.white,
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-            ),
-            child: const Text('Delete'),
-          ),
-        ],
-      ),
-    );
+  void _signOut() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      Get.offAllNamed('/login');
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        'Gagal keluar dari aplikasi',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
   }
 
   @override

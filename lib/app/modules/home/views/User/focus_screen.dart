@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lipro_mobile/app/modules/home/controllers/FocusController.dart';
+import 'package:lipro_mobile/app/modules/home/controllers/UserControllers/FocusController.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 // FocusScreen adalah halaman utama yang menampilkan data tentang sesi fokus dan statistik penggunaan aplikasi

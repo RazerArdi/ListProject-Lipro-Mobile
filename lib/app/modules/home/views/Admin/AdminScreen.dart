@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:lipro_mobile/app/modules/home/controllers/AdminController.dart';
+import 'package:lipro_mobile/app/modules/home/controllers/AdminControllers/AdminController.dart';
 
 
 class AdminScreen extends StatelessWidget {

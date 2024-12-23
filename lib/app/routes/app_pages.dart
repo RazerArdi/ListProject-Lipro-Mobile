@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lipro_mobile/app/modules/home/controllers/OnboardingController.dart';
-import 'package:lipro_mobile/app/modules/home/controllers/calendar_controller.dart';
-import 'package:lipro_mobile/app/modules/home/controllers/home_controller.dart';
+import 'package:lipro_mobile/app/modules/home/controllers/UserControllers/calendar_controller.dart';
+import 'package:lipro_mobile/app/modules/home/controllers/UserControllers/home_controller.dart';
 import 'package:lipro_mobile/app/modules/home/controllers/splash_controller.dart';
 import 'package:lipro_mobile/app/modules/home/controllers/SupportUsController.dart'; // Add this import
 import 'package:lipro_mobile/app/modules/home/views/Admin/AdminFeedback.dart';
