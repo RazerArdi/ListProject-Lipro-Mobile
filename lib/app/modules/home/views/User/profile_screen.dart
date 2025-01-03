@@ -70,7 +70,8 @@ class ProfileScreen extends StatelessWidget {
               ),
               SizedBox(height: 24),
               _buildSectionTitle('Account'),
-              ProfileOption(icon: Icons.person, label: 'Change account name'),
+              ProfileOption(icon: Icons.person, label: 'Change account name',
+                onTap: () => _showChangeNameDialog(context),),
               ProfileOption(
                 icon: Icons.lock,
                 label: 'Change account password',
@@ -108,6 +109,62 @@ class ProfileScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void _showChangeNameDialog(BuildContext context) {
+    String newName = '';
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.grey[900],
+          title: Text(
+            "Change Account Name",
+            style: TextStyle(color: Colors.white),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                onChanged: (value) => newName = value,
+                decoration: InputDecoration(
+                  labelText: 'Enter new name',
+                  labelStyle: TextStyle(color: Colors.white),
+                  filled: true,
+                  fillColor: Colors.grey[800],
+                  border: OutlineInputBorder(),
+                ),
+                style: TextStyle(color: Colors.white),
+                controller: TextEditingController(text: controller.userName.value),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(
+                "Cancel",
+                style: TextStyle(color: Colors.blue),
+              ),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blueAccent,
+                padding: EdgeInsets.symmetric(horizontal: 24),
+              ),
+              onPressed: () async {
+                if (newName.trim().isNotEmpty) {
+                  await controller.changeUserName(newName.trim());
+                  Navigator.of(context).pop();
+                }
+              },
+              child: Text("Save"),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -255,4 +312,6 @@ class ProfileOption extends StatelessWidget {
     );
   }
 }
+
+
 

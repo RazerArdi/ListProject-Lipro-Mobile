@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
@@ -32,12 +33,44 @@ class ProfileController extends GetxController {
         // Safely get the field values using null-aware operators
         var userData = userDoc.data() as Map<String, dynamic>;
         profileImageUrl.value = userData['profileImageUrl'] ?? ''; // Default to empty string if not found
-        userName.value = userData['userName'] ?? 'User'; // Default to 'User' if not found
+        userName.value = userData['fullName'] ?? 'User'; // Default to 'User' if not found
       } else {
         Get.snackbar("Error", "User profile not found.");
       }
     } catch (e) {
       Get.snackbar("Error", "Failed to load user profile: $e");
+    }
+  }
+
+  Future<void> changeUserName(String newName) async {
+    try {
+      final user = _auth.currentUser;
+      if (user != null) {
+        // Update in Firestore
+        await _firestore.collection('users').doc(user.uid).update({
+          'fullName': newName,
+        });
+
+        // Update the local state
+        userName.value = newName;
+
+        // Show success message
+        Get.snackbar(
+          'Success',
+          'Name updated successfully',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+      }
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        'Failed to update name: ${e.toString()}',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
     }
   }
 

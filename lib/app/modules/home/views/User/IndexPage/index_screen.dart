@@ -176,7 +176,7 @@ class IndexScreen extends StatelessWidget {
                 title: task['title'] as String,
                 time: task['time'] as String,
                 category: task['category'] as String,
-                taskCount: (task['taskCount'] ?? 0) as int, taskData: {},
+                taskCount: (task['taskCount'] ?? 0) as int, taskData: {}, description: '',
               );
             },
           );
